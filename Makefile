@@ -84,6 +84,9 @@ build-no-cache: dist
 shell: build ## start a shell inside the build env
 	$(DOCKER_RUN_TRAEFIK) /bin/bash
 
+shell-int: build ## start a shell inside the build env
+	$(DOCKER_RUN_TRAEFIK_INT_TESTS) /bin/bash
+
 image-dirty: binary ## build a docker traefik image
 	docker build -t $(TRAEFIK_IMAGE) .
 
