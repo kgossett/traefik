@@ -38,7 +38,8 @@ func (s *MarathonSuite) TestConfigurationUpdate(c *check.C) {
 	c.Assert(err, checker.IsNil)
 	defer cmd.Process.Kill()
 
-	marathonURL := "http://localhost:8080"
+	// marathonURL := "http://localhost:8080"
+	marathonURL := "http://" + s.composeProject.Container(c, "marathon").NetworkSettings.IPAddress + ":8080"
 
 	// Prepare Marathon client.
 	config := marathon.NewDefaultConfig()
