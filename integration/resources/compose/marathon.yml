@@ -17,7 +17,7 @@ services:
       - zookeeper
     environment:
       - MESOS_CLUSTER=local
-      - MESOS_HOSTNAME=mesos-master.docker
+      - MESOS_HOSTNAME=mesos-master
       - MESOS_LOG_DIR=/var/log
       - MESOS_WORK_DIR=/var/lib/mesos
       - MESOS_QUORUM=1
