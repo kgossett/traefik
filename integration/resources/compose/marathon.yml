@@ -27,8 +27,6 @@ services:
     depends_on:
       - zookeeper
       - mesos-master
-    # entrypoint:
-    #   - mesos-slave
     image: mesosphere/mesos-slave:1.0.1-2.0.93.ubuntu1404
     privileged: true
     hostname: mesos-slave
