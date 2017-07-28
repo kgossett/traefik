@@ -27,9 +27,9 @@ services:
     depends_on:
       - zookeeper
       - mesos-master
-    image: mesosphere/mesos-slave-dind:0.3.0_mesos-1.0.1_docker-1.10.3_ubuntu-14.04.5
     # entrypoint:
     #   - mesos-slave
+    image: mesosphere/mesos-slave:1.0.1-2.0.93.ubuntu1404
     privileged: true
     hostname: mesos-slave
     ports:
