@@ -61,6 +61,7 @@ services:
       - mesos-master
     extra_hosts:
       - "mesos-slave:172.17.0.1"
+      - "default:127.0.0.1"
     environment:
       - MARATHON_ZK=zk://zookeeper:2181/marathon
       - MARATHON_MASTER=zk://zookeeper:2181/mesos
