@@ -3,6 +3,7 @@ package integration
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/containous/traefik/integration/try"
@@ -33,15 +34,18 @@ func (s *MarathonSuite) TestSimpleConfiguration(c *check.C) {
 }
 
 func (s *MarathonSuite) TestConfigurationUpdate(c *check.C) {
-	cmd, output := s.cmdTraefik(withConfigFile("fixtures/marathon/simple.toml"))
-	err := cmd.Start()
-	c.Assert(err, checker.IsNil)
-	defer cmd.Process.Kill()
-
 	marathonIP := s.composeProject.Container(c, "marathon").NetworkSettings.IPAddress
 	c.Assert(marathonIP, checker.Not(checker.HasLen), 0)
 	marathonURL := "http://" + marathonIP + ":8080"
 	fmt.Printf("Using Marathon URL %s\n", marathonURL)
+	file := s.adaptFile(c, "fixtures/marathon/simple.toml", struct {
+		MarathonURL string
+	}{marathonURL})
+	defer os.Remove(file)
+	cmd, output := s.cmdTraefik(withConfigFile(file))
+	err := cmd.Start()
+	c.Assert(err, checker.IsNil)
+	defer cmd.Process.Kill()
 
 	// Prepare Marathon client.
 	config := marathon.NewDefaultConfig()

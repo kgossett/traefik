@@ -10,5 +10,6 @@ logLevel = "DEBUG"
 address = ":9090"
 
 [marathon]
+  endpoint = "{{.MarathonURL}}"
   watch = true
   exposedByDefault = true
