@@ -38,12 +38,17 @@ func (s *MarathonSuite) TestConfigurationUpdate(c *check.C) {
 	c.Assert(marathonIP, checker.Not(checker.HasLen), 0)
 	marathonURL := "http://" + marathonIP + ":8080"
 	fmt.Printf("Using Marathon URL %s\n", marathonURL)
+
+	fmt.Println("Waiting for Marathon to become ready")
+	err := try.GetRequest(marathonURL+"/ping", 1*time.Minute, try.StatusCodeIs(http.StatusOK))
+	c.Assert(err, checker.IsNil)
+
 	file := s.adaptFile(c, "fixtures/marathon/simple.toml", struct {
 		MarathonURL string
 	}{marathonURL})
 	defer os.Remove(file)
 	cmd, output := s.cmdTraefik(withConfigFile(file))
-	err := cmd.Start()
+	err = cmd.Start()
 	c.Assert(err, checker.IsNil)
 	defer cmd.Process.Kill()
 
@@ -59,13 +64,6 @@ func (s *MarathonSuite) TestConfigurationUpdate(c *check.C) {
 			s.displayTraefikLog(c, output)
 		}
 	}()
-
-	fmt.Println("Waiting for Marathon to become ready")
-	err = try.Do(1*time.Minute, func() error {
-		_, err := client.Ping()
-		return err
-	})
-	c.Assert(err, checker.IsNil)
 
 	// Deploy test application via Marathon.
 	app := marathon.NewDockerApplication().
