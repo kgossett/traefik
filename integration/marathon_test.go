@@ -40,6 +40,7 @@ func (s *MarathonSuite) TestConfigurationUpdate(c *check.C) {
 
 	// marathonURL := "http://localhost:8080"
 	marathonURL := "http://" + s.composeProject.Container(c, "marathon").NetworkSettings.IPAddress + ":8080"
+	fmt.Printf("using Marathon URL %s\n", marathonURL)
 
 	// Prepare Marathon client.
 	config := marathon.NewDefaultConfig()
