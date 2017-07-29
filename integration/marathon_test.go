@@ -7,7 +7,6 @@ import (
 
 	"github.com/containous/traefik/integration/try"
 	"github.com/containous/traefik/types"
-	"github.com/davecgh/go-spew/spew"
 	marathon "github.com/gambol99/go-marathon"
 	"github.com/go-check/check"
 	checker "github.com/vdemeester/shakers"
@@ -39,17 +38,10 @@ func (s *MarathonSuite) TestConfigurationUpdate(c *check.C) {
 	c.Assert(err, checker.IsNil)
 	defer cmd.Process.Kill()
 
-	// marathonURL := "http://localhost:8080"
-	// marathonURL := "http://192.168.99.100:8080"
-	var marathonURL string
-	networks := s.composeProject.Container(c, "marathon").NetworkSettings.Networks
-	c.Assert(networks, checker.Not(checker.HasLen), 0)
-	for _, netw := range s.composeProject.Container(c, "marathon").NetworkSettings.Networks {
-		fmt.Printf("Network settings are: %v\n", spew.Sdump(netw))
-		marathonURL = fmt.Sprintf("http://%s:8080", netw.IPAddress)
-		break
-	}
-	fmt.Printf("using Marathon URL %s\n", marathonURL)
+	marathonIP := s.composeProject.Container(c, "marathon").NetworkSettings.IPAddress
+	c.Assert(marathonIP, checker.Not(checker.HasLen), 0)
+	marathonURL := "http://" + marathonIP + ":8080"
+	fmt.Printf("Using Marathon URL %s\n", marathonURL)
 
 	// Prepare Marathon client.
 	config := marathon.NewDefaultConfig()
