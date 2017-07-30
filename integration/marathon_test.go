@@ -79,7 +79,7 @@ func (s *MarathonSuite) TestConfigurationUpdate(c *check.C) {
 	deploy, err := client.UpdateApplication(app, false)
 	c.Assert(err, checker.IsNil)
 	fmt.Println("Waiting for Deployment to complete")
-	c.Assert(client.WaitOnDeployment(deploy.DeploymentID, 30*time.Second), checker.IsNil)
+	c.Assert(client.WaitOnDeployment(deploy.DeploymentID, 2*time.Minute), checker.IsNil)
 
 	fmt.Println("Querying application via Traefik")
 	err = try.GetRequest("http://127.0.0.1:8000/service", 15*time.Second, try.StatusCodeIs(http.StatusOK))
