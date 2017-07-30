@@ -5,8 +5,9 @@ mesos-master:
   links:
     - zookeeper
   image: mesosphere/mesos-master:1.0.1-2.0.93.ubuntu1404
-  ports:
-    - "5050:5050"
+  # Uncomment published ports for interactive debugging.
+  # ports:
+  #   - "5050:5050"
   environment:
     - MESOS_CLUSTER=local
     - MESOS_HOSTNAME=mesos-master
@@ -43,8 +44,9 @@ marathon:
     - mesos-master
     - mesos-slave
   image: mesosphere/marathon:v1.3.7
-  ports:
-    - "8080:8080"
+  # Uncomment published ports for interactive debugging.
+  # ports:
+  #   - "8080:8080"
   extra_hosts:
     - "mesos-slave:172.17.0.1"
     # - "default:127.0.0.1"
