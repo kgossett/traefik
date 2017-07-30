@@ -80,7 +80,7 @@ func (s *MarathonSuite) TestConfigurationUpdate(c *check.C) {
 	c.Assert(client.WaitOnDeployment(deploy.DeploymentID, 30*time.Second), checker.IsNil)
 
 	fmt.Println("Querying application via Traefik")
-	err = try.GetRequest("http://127.0.0.1:8000/service", 5*time.Second, try.StatusCodeIs(http.StatusOK))
+	err = try.GetRequest("http://127.0.0.1:8000/service", 15*time.Second, try.StatusCodeIs(http.StatusOK))
 	c.Assert(err, checker.IsNil)
 	showTraefikLog = false
 }
