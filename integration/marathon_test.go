@@ -70,8 +70,10 @@ func (s *MarathonSuite) TestConfigurationUpdate(c *check.C) {
 		Name("/whoami").
 		CPU(0.1).
 		Memory(32).
-		AddLabel(types.LabelFrontendRule, "PathPrefix:/service")
-	app.Container.Docker.Container("emilevauge/whoami")
+		AddLabel(types.LabelFrontendRule, "PathPrefix:/service").
+		AddLabel(types.LabelPort, "80")
+	app.Container.Docker.Bridged().
+		Container("emilevauge/whoami")
 
 	fmt.Println("Deploying test application")
 	deploy, err := client.UpdateApplication(app, false)
