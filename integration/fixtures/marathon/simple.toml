@@ -13,3 +13,4 @@ address = ":9090"
   endpoint = "{{.MarathonURL}}"
   watch = true
   exposedByDefault = true
+  forceTaskIP = true

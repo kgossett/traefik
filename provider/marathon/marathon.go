@@ -50,6 +50,7 @@ type Provider struct {
 	TLS                     *provider.ClientTLS `description:"Enable Docker TLS support"`
 	DialerTimeout           flaeg.Duration      `description:"Set a non-default connection timeout for Marathon"`
 	KeepAlive               flaeg.Duration      `description:"Set a non-default TCP Keep Alive time in seconds"`
+	ForceTaskIP             bool                `description:"Force to use the task's IP address."`
 	ForceTaskHostname       bool                `description:"Force to use the task's hostname."`
 	Basic                   *Basic              `description:"Enable basic authentication"`
 	marathonClient          marathon.Marathon
@@ -502,7 +503,7 @@ func retrieveAvailablePorts(application marathon.Application, task marathon.Task
 func (p *Provider) getBackendServer(task marathon.Task, application marathon.Application) string {
 	numTaskIPAddresses := len(task.IPAddresses)
 	switch {
-	case application.IPAddressPerTask == nil || p.ForceTaskHostname:
+	case (application.IPAddressPerTask == nil && !p.ForceTaskIP) || p.ForceTaskHostname:
 		return task.Host
 	case numTaskIPAddresses == 0:
 		log.Errorf("Missing IP address for Marathon application %s on task %s", application.ID, task.ID)
